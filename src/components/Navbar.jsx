@@ -1,45 +1,123 @@
-import React from 'react';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Link, NavLink } from 'react-router-dom';
-import LogoutIcon from '@mui/icons-material/Logout';
-import logo from '../images/gym-logo.png'
-function Navbar({ toggleMenu }) {
+import React, { useState, useEffect } from 'react';
+import '../components_css/Navbar.css';
+import logo from '../images/logo.png';
+import { NavLink } from 'react-router-dom';
+import { ChevronUp, LogOut, ChevronDown } from "lucide-react";
+
+const Navbar = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const userName = "User";
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
+  useEffect(() => {
+    const controlNavbar = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < 10) {
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY) {
+        setIsVisible(false);
+        setIsMobileMenuOpen(false);
+      } else {
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', controlNavbar);
+
+    return () => {
+      window.removeEventListener('scroll', controlNavbar);
+    };
+  }, [lastScrollY]);
+
   return (
-    <nav className="navbar navbar-expand-lg shadow-sm fixed-top" >
-      <div className="container-fluid">
-      <Link to="/" className="brand-link">
-        <img 
-          src={logo} 
-          alt="GYM Logo" 
-          className="brand-logo"
-        />
-        <div className="brand-text-container">
-          <span className="brand-name">FitZone</span>
-          <span className="brand-tagline" style={{color:"black"}}>Fitness Start Here</span>
-        </div>
-      </Link>
-        <div className="d-flex align-items-center ">
-          <div className="dropdown me-3">
-            <button className="btn btn-custom d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <AccountCircleIcon className="me-2 text-primary" />
-              <span className='text-dark'>Hello, User</span>
-              <i className="bi bi-chevron-down ms-2 text-dark"></i>
-            </button>
-            <ul className="dropdown-menu dropdown-menu-end shadow" >
-              <li><NavLink className="dropdown-item" to="/profile"><i class="bi bi-person-video2"></i> Profile</NavLink></li>
-              <li><NavLink className="dropdown-item" to="/Users"><i class="bi bi-people-fill"></i> Users</NavLink></li>
-              <li><hr className="dropdown-divider" /></li>
-              <li><NavLink className="dropdown-item text-danger" to="/signout"><LogoutIcon/> Sign Out</NavLink></li>
-            </ul>
+    <header className={`ms-navbar ${isVisible ? 'ms-navbar-visible' : 'ms-navbar-hidden'}`}>
+      {/* Top Row - Logo and Actions */}
+      <div className="ms-navbar-top">
+        <div className="ms-navbar-top-container">
+          {/* Logo */}
+          <div className="ms-navbar-logo">
+            <NavLink to="/" onClick={closeMobileMenu}>
+              <img src={logo} alt="FitZone Logo" className="ms-logo-image" />
+              <div style={{ marginLeft: '12px', display: 'flex', flexDirection: 'column' }}>
+                <span style={{ 
+  fontSize: '1.5rem', 
+  fontWeight: '700', 
+  color: '#ffffff',
+  lineHeight: '1.2',
+  letterSpacing: '0.5px'
+}}>
+  FitZone
+</span>
+<span style={{ 
+  fontSize: '0.75rem', 
+  fontWeight: '400', 
+  color: '#ff8c42',  // Changed to an energetic orange
+  lineHeight: '1.2',
+  letterSpacing: '0.3px',
+  marginTop: '2px'
+}}>
+  Fitness Start Here..
+</span>
+              </div>
+            </NavLink>
           </div>
-          <button className="navbar-toggler" type="button" onClick={toggleMenu} aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
+
+          {/* Desktop Actions */}
+          <div className="ms-navbar-actions ms-desktop-actions">
+            <span className="welcome-text">Welcome, {userName}</span>
+            {/* <button className="ms-navbar-btn ms-btn-newsletter">
+              <span>Profile</span>
+            </button> */}
+            <button className="ms-navbar-btn ms-btn-clients">
+              <LogOut size={16} />
+              <span>Sign Out</span>
+            </button>
+          </div>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            className={`ms-mobile-menu-toggle ${isMobileMenuOpen ? 'ms-menu-open' : ''}`}
+            onClick={toggleMobileMenu}
+            aria-label="Toggle menu"
+          >
+            <span className="ms-hamburger-line"></span>
+            <span className="ms-hamburger-line"></span>
+            <span className="ms-hamburger-line"></span>
           </button>
         </div>
       </div>
-    </nav>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="ms-navbar-bottom ms-menu-visible">
+          <div className="ms-navbar-bottom-container">
+            <div className="ms-mobile-actions">
+              <p className="welcome-text-mobile">Welcome, {userName}</p>
+              <button className="ms-navbar-btn ms-btn-newsletter">
+                <span>Profile</span>
+              </button>
+              <button className="ms-navbar-btn ms-btn-clients">
+                <LogOut size={16} />
+                <span>Sign Out</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
   );
-}
+};
 
 export default Navbar;
-

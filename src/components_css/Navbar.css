@@ -1,0 +1,266 @@
+/* Navbar.css */
+
+.ms-navbar {
+  background-color: black;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+  transform: translateY(0);
+}
+
+/* Navbar visibility states */
+.ms-navbar.ms-navbar-visible {
+  transform: translateY(0);
+}
+
+.ms-navbar.ms-navbar-hidden {
+  transform: translateY(-100%);
+  box-shadow: none;
+}
+
+.ms-navbar-top-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2.5rem 1rem;
+  min-height: 70px;
+}
+
+/* Logo Styling */
+.ms-navbar-logo a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.3s ease;
+}
+
+.ms-navbar-logo a:hover {
+  opacity: 0.8;
+}
+
+.ms-logo-image {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
+/* Actions/Buttons */
+.ms-navbar-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+/* Hide mobile actions by default */
+.ms-mobile-actions {
+  display: none;
+}
+
+.ms-navbar-btn {
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.813rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  cursor: pointer;
+}
+
+.ms-btn-newsletter {
+  background-color: transparent;
+  color: white;
+  border: 1px solid #d0d0d0;
+}
+
+.ms-btn-newsletter:hover {
+  background-color: #2a2a2a;
+  border-color: #b0b0b0;
+}
+
+.ms-btn-newsletter span {
+  display: inline-block;
+}
+
+.ms-btn-clients {
+  background-color: #7a3e1a;
+  color: white;
+  border: 1px solid #7a3e1a;
+}
+
+.ms-btn-clients:hover {
+  background-color: #5f2f13;
+  border-color: #5f2f13;
+}
+
+/* Mobile Menu Toggle - Animated Hamburger */
+.ms-mobile-menu-toggle {
+  display: none;
+  flex-direction: column;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  gap: 5px;
+  z-index: 1001;
+  width: 36px;
+  height: 30px;
+  justify-content: space-between;
+  position: relative;
+}
+
+.ms-hamburger-line {
+  width: 28px;
+  height: 3px;
+  background-color: #f5f5f5;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  border-radius: 2px;
+  transform-origin: center;
+  position: relative;
+}
+
+/* Hamburger to X Animation */
+.ms-mobile-menu-toggle.ms-menu-open .ms-hamburger-line:nth-child(1) {
+  transform: translateY(11px) rotate(45deg);
+}
+
+.ms-mobile-menu-toggle.ms-menu-open .ms-hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.ms-mobile-menu-toggle.ms-menu-open .ms-hamburger-line:nth-child(3) {
+  transform: translateY(-11px) rotate(-45deg);
+}
+
+/* Welcome text styling */
+.welcome-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #f5f5f5;
+}
+
+/* Mobile welcome text */
+.welcome-text-mobile {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f5f5f5;
+  padding: 1rem 0;
+}
+
+/* Mobile Menu Container */
+.ms-navbar-bottom {
+  background-color: black;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.ms-navbar-bottom.ms-menu-visible {
+  max-height: 500px;
+  border-top: 1px solid #333;
+}
+
+.ms-navbar-bottom-container {
+  padding: 0;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1200px) {
+  .ms-navbar-top-container {
+    padding: 1rem 1.5rem;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .ms-navbar-top-container {
+    padding: 0.875rem 1.25rem;
+  }
+
+  .ms-navbar-btn {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .ms-mobile-menu-toggle {
+    display: flex;
+  }
+
+  .ms-desktop-actions {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .ms-logo-image {
+    height: 50px;
+  }
+
+  .ms-navbar-top-container {
+    min-height: 60px;
+    padding: 0.75rem 1rem;
+  }
+
+  /* Mobile actions - Show when menu is open */
+  .ms-mobile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.5rem 1.25rem;
+    animation: fadeInUp 0.3s ease forwards;
+    animation-delay: 0.1s;
+    opacity: 0;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .ms-mobile-actions {
+    transform: translateY(10px);
+  }
+
+  /* Button styles for mobile */
+  .ms-mobile-actions .ms-navbar-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.875rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .ms-mobile-actions .ms-btn-newsletter {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid #d0d0d0;
+  }
+
+  .ms-mobile-actions .ms-btn-newsletter:active {
+    background-color: #2a2a2a;
+  }
+
+  .ms-mobile-actions .ms-btn-clients {
+    background-color: #7a3e1a;
+    color: #ffffff;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .ms-logo-image {
+    height: 40px;
+  }
+}
