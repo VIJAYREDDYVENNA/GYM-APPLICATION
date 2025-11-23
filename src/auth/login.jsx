@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { User, Lock, Mail, Phone, MapPin, Building2, Eye, EyeOff } from 'lucide-react';
-import logo from '../images/logo.png'
+import logo from '../images/logo.png';
+import { useAuth } from "../context/AuthContext";
+
 
 export default function FitProAdminAuth() {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -9,6 +11,7 @@ export default function FitProAdminAuth() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [showRequirements, setShowRequirements] = useState(true);
+  const { login } = useAuth();
 
   const [formData, setFormData] = useState({
     username: '',
@@ -143,44 +146,36 @@ export default function FitProAdminAuth() {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (isSignUp) {
-      // Validate before submission
-      const mobileError = validateMobile(formData.mobile);
-      const emailError = validateEmail(formData.email);
-      const passwordError = validatePassword(formData.signupPassword);
-      const confirmPasswordError = validateConfirmPassword(formData.confirmPassword, formData.signupPassword);
+  if (isSignUp) {
+    // Signup logic unchanged
+    const mobileError = validateMobile(formData.mobile);
+    const emailError = validateEmail(formData.email);
+    const passwordError = validatePassword(formData.signupPassword);
+    const confirmPasswordError = validateConfirmPassword(formData.confirmPassword, formData.signupPassword);
 
-      if (mobileError || emailError || passwordError || confirmPasswordError) {
-        setValidationErrors({
-          mobile: mobileError,
-          email: emailError,
-          signupPassword: passwordError,
-          confirmPassword: confirmPasswordError
-        });
-        alert('Please fix the validation errors before submitting');
-        return;
-      }
-
-      console.log('Sign Up Data:', {
-        name: formData.name,
-        mobile: formData.mobile,
-        email: formData.email,
-        gymName: formData.gymName,
-        address: formData.address,
-        password: formData.signupPassword
+    if (mobileError || emailError || passwordError || confirmPasswordError) {
+      setValidationErrors({
+        mobile: mobileError,
+        email: emailError,
+        signupPassword: passwordError,
+        confirmPassword: confirmPasswordError,
       });
-      alert('Sign up successful! Please sign in.');
-      toggleForm();
-    } else {
-      console.log('Sign In Data:', {
-        username: formData.username,
-        password: formData.password
-      });
-      alert('Sign in successful!');
+      alert("Please fix the validation errors before submitting");
+      return;
     }
-  };
+
+    alert("Sign up successful! Please sign in.");
+    toggleForm();
+  } 
+  else {
+    // LOGIN
+    if (formData.username && formData.password) {
+      login(formData.username); 
+    }
+  }
+};
 
   const toggleForm = () => {
     setIsFlipping(true);

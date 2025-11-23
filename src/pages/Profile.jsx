@@ -36,7 +36,7 @@ export default function Profile() {
                 .profile-page {
                     padding: 25px 30px;
                     background: #f5f5f5;
-                    min-height: 100vh;
+                    min-height: 93vh;
                     font-family: 'Inter', 'Segoe UI', sans-serif;
                     display: flex;
                     flex-direction: column;

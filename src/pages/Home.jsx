@@ -21,7 +21,7 @@ export default function Home() {
 
     const responsiveCSS = `
         .home-page {
-            min-height: 100vh;
+           
             width: 100%;
             position: relative;
             overflow: hidden;

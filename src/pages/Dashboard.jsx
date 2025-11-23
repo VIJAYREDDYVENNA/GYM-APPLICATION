@@ -181,7 +181,7 @@ export default function Dashboard() {
         page: {
             padding: isMobile ? "16px" : isTablet ? "20px 24px" : "30px 40px",
             background: "#f8f9fc",
-            minHeight: "100vh",
+        
             fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
             position: "relative",
         },

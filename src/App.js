@@ -44,32 +44,62 @@
 //   );
 // }
 
+import React, { useState } from "react";
+import "./App.css";
+import SidebarMenu from "./components/SidebarMenu";
+import Navbar from "./components/Navbar";
+import { AuthProvider } from "./context/AuthContext";
+import { useLocation } from "react-router-dom";
+import AppRoutes from "./AppRoutes";
+import { Layout } from "antd";
 
-import React, { useState } from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import './App.css';
-import MenuItems from './components/SidebarMenu';
-import Navbar from './components/Navbar';
+const { Content } = Layout;
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+  const isLoginPage = location.pathname === "/login";
+  const validPaths = ["/", "/login", "/attendance", "/clients", "/profile", "/trainers", "/payments"];
+  const is404Page = !validPaths.includes(location.pathname);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+// import { matchRoutes } from "react-router-dom";
+// import routes from "./AppRoutesConfig";
+// const matches = matchRoutes(routes, location);
+
+// const is404Page = !matches;
+
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
     <div className="appcontainer">
-      <BrowserRouter>
-        <Navbar />
+      <AuthProvider>
+
+        {/* Hide navbar on login */}
+        {!isLoginPage && !is404Page && (
+          <Navbar toggleMenu={toggleMenu} isMobileMenuOpen={isMenuOpen} />
+        )}
+
+
         <div className="content-wrapper">
-          <MenuItems isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+          <Layout className="dashboard-layout">
+
+            {/* Hide sidebar on login */}
+            {!isLoginPage && !is404Page && (
+              <SidebarMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
+            )}
+
+
+            <Content className="content-styles">
+              <AppRoutes />
+            </Content>
+
+          </Layout>
         </div>
-      </BrowserRouter>
+
+      </AuthProvider>
     </div>
   );
 }
 
 export default App;
-
-

@@ -2,116 +2,81 @@ import React, { useState, useEffect } from 'react';
 import '../components_css/Navbar.css';
 import logo from '../images/logo.png';
 import { NavLink } from 'react-router-dom';
-import {LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { LuCircleUser } from "react-icons/lu";
+import { useAuth } from "../context/AuthContext";
 
-const Navbar = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-  const userName = "User";
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
+const Navbar = ({ toggleMenu, isMobileMenuOpen }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  // const userName = "User";
+const { user, logout } = useAuth();
   const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
+    if (isMobileMenuOpen && window.innerWidth <= 1024) {
+      toggleMenu();
+    }
   };
 
   useEffect(() => {
-    const controlNavbar = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY < 10) {
-        setIsVisible(true);
-      } else if (currentScrollY > lastScrollY) {
-        setIsVisible(false);
-        setIsMobileMenuOpen(false);
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsScrolled(true);
       } else {
-        setIsVisible(true);
+        setIsScrolled(false);
       }
-
-      setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener('scroll', controlNavbar);
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', controlNavbar);
+      window.removeEventListener('scroll', handleScroll);
     };
-  }, [lastScrollY]);
+  }, []);
 
   return (
-    <header className={`ms-navbar ${isVisible ? 'ms-navbar-visible' : 'ms-navbar-hidden'}`}>
-      {/* Top Row - Logo and Actions */}
-      <div className="ms-navbar-top">
-        <div className="ms-navbar-top-container">
-          {/* Logo */}
-          <div className="ms-navbar-logo">
-            <NavLink to="/" onClick={closeMobileMenu}>
-              <img src={logo} alt="FitZone Logo" className="ms-logo-image" />
-              <div style={{ marginLeft: '12px', display: 'flex', flexDirection: 'column' }}>
-                <span style={{ 
-  fontSize: '1.5rem', 
-  fontWeight: '700', 
-  color: '#ffffff',
-  lineHeight: '1.2',
-  letterSpacing: '0.5px'
-}}>
-  FitZone
-</span>
-<span style={{ 
-  fontSize: '0.75rem', 
-  fontWeight: '400', 
-  color: '#ff8c42',  // Changed to an energetic orange
-  lineHeight: '1.2',
-  letterSpacing: '0.3px',
-  marginTop: '2px'
-}}>
-  Fitness Start Here..
-</span>
-              </div>
-            </NavLink>
+    <nav className={`navbar navbar-expand-lg navbar-dark ms-navbar ${isScrolled ? 'ms-navbar-scrolled' : ''}`}>
+      <div className="container-fluid ms-navbar-top-container">
+        {/* Logo/Brand */}
+        <NavLink className="navbar-brand ms-navbar-logo" to="/" onClick={closeMobileMenu}>
+          <img src={logo} alt="FitZone Logo" className="ms-logo-image" />
+          <div className="ms-logo-text">
+            <span className="ms-brand-name">
+              FitZone
+            </span>
+            <span className="ms-brand-tagline">
+              Fitness Start Here..
+            </span>
           </div>
+        </NavLink>
 
-          {/* Desktop Actions */}
-          <div className="ms-navbar-actions ms-desktop-actions">
-            <span className="welcome-text"> <LuCircleUser size={20}/> Welcome, {userName}</span>       
-            <NavLink to='/login' className="ms-navbar-btn ms-btn-clients">
-              <LogOut size={16} />
-              <span>Sign Out</span>
-            </NavLink>
-          </div>
-
-          {/* Mobile Menu Toggle */}
+        {/* Right side controls wrapper */}
+        <div className="ms-navbar-controls">
+          {/* Mobile Toggle Button for Sidebar */}
           <button
-            className={`ms-mobile-menu-toggle ${isMobileMenuOpen ? 'ms-menu-open' : ''}`}
-            onClick={toggleMobileMenu}
-            aria-label="Toggle menu"
+            className={`navbar-toggler ms-mobile-menu-toggle ${isMobileMenuOpen ? 'ms-menu-open' : ''}`}
+            type="button"
+            onClick={toggleMenu}
+            aria-controls="sidebarMenu"
+            aria-expanded={isMobileMenuOpen}
+            aria-label="Toggle navigation"
           >
             <span className="ms-hamburger-line"></span>
             <span className="ms-hamburger-line"></span>
             <span className="ms-hamburger-line"></span>
           </button>
-        </div>
-      </div>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="ms-navbar-bottom ms-menu-visible">
-          <div className="ms-navbar-bottom-container">
-            <div className="ms-mobile-actions">
-              <p className="welcome-text-mobile text-center">Welcome, {userName}</p>             
-              <NavLink to='/login' className="ms-navbar-btn ms-btn-clients">
-                <LogOut size={16} />
-                <span>Sign Out</span>
-              </NavLink>
-            </div>
+          {/* Desktop & Mobile Actions - Always Visible */}
+          <div className="ms-navbar-actions ms-all-actions">
+            <span className="welcome-text">
+              <LuCircleUser size={20} /> <span className="username-text">Welcome, {user}</span>
+            </span>
+            <NavLink to='/login' className="ms-navbar-btn ms-btn-clients">
+              <LogOut size={16} />
+              <span>Sign Out</span>
+            </NavLink>
           </div>
         </div>
-      )}
-    </header>
+      </div>
+    </nav>
   );
 };
 

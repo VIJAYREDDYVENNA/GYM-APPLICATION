@@ -769,14 +769,12 @@ export default function Clients() {
     return (
         <>
             <style>{`
-                * {
-                    box-sizing: border-box;
-                }
+               
                 
                 .clients-page {
                     padding: 25px;
                     background: #f5f7fb;
-                    min-height: 100vh;
+                    
                     font-family: Inter, sans-serif;
                 }
 
