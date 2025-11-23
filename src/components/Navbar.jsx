@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import '../components_css/Navbar.css';
 import logo from '../images/logo.png';
 import { NavLink } from 'react-router-dom';
-import { ChevronUp, LogOut, ChevronDown } from "lucide-react";
+import {LogOut } from "lucide-react";
+import { LuCircleUser } from "react-icons/lu";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -76,14 +77,11 @@ const Navbar = () => {
 
           {/* Desktop Actions */}
           <div className="ms-navbar-actions ms-desktop-actions">
-            <span className="welcome-text">Welcome, {userName}</span>
-            {/* <button className="ms-navbar-btn ms-btn-newsletter">
-              <span>Profile</span>
-            </button> */}
-            <button className="ms-navbar-btn ms-btn-clients">
+            <span className="welcome-text"> <LuCircleUser size={20}/> Welcome, {userName}</span>       
+            <NavLink to='/login' className="ms-navbar-btn ms-btn-clients">
               <LogOut size={16} />
               <span>Sign Out</span>
-            </button>
+            </NavLink>
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -104,14 +102,11 @@ const Navbar = () => {
         <div className="ms-navbar-bottom ms-menu-visible">
           <div className="ms-navbar-bottom-container">
             <div className="ms-mobile-actions">
-              <p className="welcome-text-mobile">Welcome, {userName}</p>
-              <button className="ms-navbar-btn ms-btn-newsletter">
-                <span>Profile</span>
-              </button>
-              <button className="ms-navbar-btn ms-btn-clients">
+              <p className="welcome-text-mobile text-center">Welcome, {userName}</p>             
+              <NavLink to='/login' className="ms-navbar-btn ms-btn-clients">
                 <LogOut size={16} />
                 <span>Sign Out</span>
-              </button>
+              </NavLink>
             </div>
           </div>
         </div>

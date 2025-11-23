@@ -9,7 +9,7 @@ export default function FitProAdminAuth() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [showRequirements, setShowRequirements] = useState(true);
-  
+
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -60,23 +60,23 @@ export default function FitProAdminAuth() {
     if (!password) {
       return '';
     }
-    
+
     const minLength = 6;
     const hasUpperCase = /[A-Z]/.test(password);
     const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
-    
+
     if (password.length < minLength) {
       return 'Password must be at least 6 characters long';
     }
-    
+
     if (!hasUpperCase) {
       return 'Password must contain at least 1 uppercase letter';
     }
-    
+
     if (!hasSpecialChar) {
       return 'Password must contain at least 1 special character (!@#$%^&* etc.)';
     }
-    
+
     return '';
   };
 
@@ -92,7 +92,7 @@ export default function FitProAdminAuth() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     setFormData({
       ...formData,
       [name]: value
@@ -122,7 +122,7 @@ export default function FitProAdminAuth() {
         ...prev,
         signupPassword: error
       }));
-      
+
       // Also validate confirm password if it has a value
       if (formData.confirmPassword) {
         const confirmError = validateConfirmPassword(formData.confirmPassword, value);
@@ -144,7 +144,7 @@ export default function FitProAdminAuth() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     if (isSignUp) {
       // Validate before submission
       const mobileError = validateMobile(formData.mobile);
@@ -218,11 +218,11 @@ export default function FitProAdminAuth() {
   // Helper function to get password strength indicator
   const getPasswordStrength = (password) => {
     if (!password) return null;
-    
+
     const minLength = password.length >= 6;
     const hasUpperCase = /[A-Z]/.test(password);
     const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
-    
+
     return {
       minLength,
       hasUpperCase,
@@ -233,9 +233,9 @@ export default function FitProAdminAuth() {
   const passwordStrength = getPasswordStrength(formData.signupPassword);
 
   // Check if all password requirements are met
-  const allRequirementsMet = passwordStrength && 
-    passwordStrength.minLength && 
-    passwordStrength.hasUpperCase && 
+  const allRequirementsMet = passwordStrength &&
+    passwordStrength.minLength &&
+    passwordStrength.hasUpperCase &&
     passwordStrength.hasSpecialChar;
 
   // Auto-hide requirements after 2 seconds when all conditions are met
@@ -257,15 +257,9 @@ export default function FitProAdminAuth() {
   return (
     <>
       <style>{`
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-
-        body {
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+         .customMarginTop{
+              margin-top: 0px;
+          }
 
         .gymauth-main-container {
           min-height: 100vh;
@@ -893,7 +887,7 @@ export default function FitProAdminAuth() {
                                 placeholder="Enter your password"
                                 required
                               />
-                              <div 
+                              <div
                                 className="gymauth-eye-icon"
                                 onClick={() => setShowLoginPassword(!showLoginPassword)}
                               >
@@ -1002,7 +996,7 @@ export default function FitProAdminAuth() {
                                 placeholder="Create a password"
                                 required
                               />
-                              <div 
+                              <div
                                 className="gymauth-eye-icon"
                                 onClick={() => setShowPassword(!showPassword)}
                               >
@@ -1051,17 +1045,16 @@ export default function FitProAdminAuth() {
                                 name="confirmPassword"
                                 value={formData.confirmPassword}
                                 onChange={handleChange}
-                                className={`gymauth-input gymauth-input-with-eye ${
-                                  validationErrors.confirmPassword 
-                                    ? 'gymauth-input-error' 
-                                    : formData.confirmPassword && formData.signupPassword && !validationErrors.confirmPassword && !validationErrors.signupPassword
-                                      ? 'gymauth-input-success' 
-                                      : ''
-                                }`}
+                                className={`gymauth-input gymauth-input-with-eye ${validationErrors.confirmPassword
+                                  ? 'gymauth-input-error'
+                                  : formData.confirmPassword && formData.signupPassword && !validationErrors.confirmPassword && !validationErrors.signupPassword
+                                    ? 'gymauth-input-success'
+                                    : ''
+                                  }`}
                                 placeholder="Confirm your password"
                                 required
                               />
-                              <div 
+                              <div
                                 className="gymauth-eye-icon"
                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                               >
@@ -1074,16 +1067,16 @@ export default function FitProAdminAuth() {
                                 <span>{validationErrors.confirmPassword}</span>
                               </div>
                             )}
-                            {!validationErrors.confirmPassword && 
-                             !validationErrors.signupPassword &&
-                             formData.confirmPassword && 
-                             formData.signupPassword && 
-                             formData.confirmPassword === formData.signupPassword && (
-                              <div className="gymauth-success-message">
-                                <span className="gymauth-success-icon">✓</span>
-                                <span>Passwords match!</span>
-                              </div>
-                            )}
+                            {!validationErrors.confirmPassword &&
+                              !validationErrors.signupPassword &&
+                              formData.confirmPassword &&
+                              formData.signupPassword &&
+                              formData.confirmPassword === formData.signupPassword && (
+                                <div className="gymauth-success-message">
+                                  <span className="gymauth-success-icon">✓</span>
+                                  <span>Passwords match!</span>
+                                </div>
+                              )}
                           </div>
 
                           <div className="gymauth-field">

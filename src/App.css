@@ -1,0 +1,9 @@
+.customMarginTop{
+    margin-top: 70px;
+}
+
+@media  (max-width:500px){
+    .customMarginTop{
+    margin-top: 65px;
+}
+}
