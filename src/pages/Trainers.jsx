@@ -421,7 +421,7 @@ export default function Trainers() {
 .trainers-page {
     padding: 25px;
     background: #f5f7fb;
-    
+    min-height:100vh;
     font-family: Inter, sans-serif;
 }
 

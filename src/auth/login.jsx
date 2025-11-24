@@ -12,6 +12,7 @@ export default function FitProAdminAuth() {
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [showRequirements, setShowRequirements] = useState(true);
   const { login } = useAuth();
+  const [rememberMe, setRememberMe] = useState(false);
 
   const [formData, setFormData] = useState({
     username: '',
@@ -146,36 +147,36 @@ export default function FitProAdminAuth() {
   };
 
   const handleSubmit = (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (isSignUp) {
-    // Signup logic unchanged
-    const mobileError = validateMobile(formData.mobile);
-    const emailError = validateEmail(formData.email);
-    const passwordError = validatePassword(formData.signupPassword);
-    const confirmPasswordError = validateConfirmPassword(formData.confirmPassword, formData.signupPassword);
+    if (isSignUp) {
+      // Signup logic unchanged
+      const mobileError = validateMobile(formData.mobile);
+      const emailError = validateEmail(formData.email);
+      const passwordError = validatePassword(formData.signupPassword);
+      const confirmPasswordError = validateConfirmPassword(formData.confirmPassword, formData.signupPassword);
 
-    if (mobileError || emailError || passwordError || confirmPasswordError) {
-      setValidationErrors({
-        mobile: mobileError,
-        email: emailError,
-        signupPassword: passwordError,
-        confirmPassword: confirmPasswordError,
-      });
-      alert("Please fix the validation errors before submitting");
-      return;
+      if (mobileError || emailError || passwordError || confirmPasswordError) {
+        setValidationErrors({
+          mobile: mobileError,
+          email: emailError,
+          signupPassword: passwordError,
+          confirmPassword: confirmPasswordError,
+        });
+        alert("Please fix the validation errors before submitting");
+        return;
+      }
+
+      alert("Sign up successful! Please sign in.");
+      toggleForm();
     }
-
-    alert("Sign up successful! Please sign in.");
-    toggleForm();
-  } 
-  else {
-    // LOGIN
-    if (formData.username && formData.password) {
-      login(formData.username); 
+    else {
+      // LOGIN
+      if (formData.username && formData.password) {
+        login(formData.username);
+      }
     }
-  }
-};
+  };
 
   const toggleForm = () => {
     setIsFlipping(true);
@@ -893,8 +894,13 @@ export default function FitProAdminAuth() {
 
                           <div className="gymauth-remember-row">
                             <label className="gymauth-checkbox-wrapper">
-                              <input type="checkbox" className="gymauth-checkbox" />
-                              <span className="gymauth-checkbox-label">Remember me</span>
+                              <input
+                                type="checkbox"
+                                className="gymauth-checkbox"
+                                checked={rememberMe}
+                                onChange={(e) => setRememberMe(e.target.checked)}
+                              />
+                              <span className="gymauth-checkbox-label">Remember me</span>                              
                             </label>
                             <a href="#" className="gymauth-forgot">Forgot password?</a>
                           </div>

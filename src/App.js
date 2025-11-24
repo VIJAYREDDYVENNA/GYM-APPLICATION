@@ -59,46 +59,38 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const isLoginPage = location.pathname === "/login";
-  const validPaths = ["/", "/login", "/attendance", "/clients", "/profile", "/trainers", "/payments"];
+  const validPaths = ["/", "/login/", "/attendance/", "/clients/", "/profile/", "/trainers/", "/payments/","/login", "/attendance", "/clients", "/profile", "/trainers", "/payments"];
   const is404Page = !validPaths.includes(location.pathname);
 
-// import { matchRoutes } from "react-router-dom";
-// import routes from "./AppRoutesConfig";
-// const matches = matchRoutes(routes, location);
+  // import { matchRoutes } from "react-router-dom";
+  // import routes from "./AppRoutesConfig";
+  // const matches = matchRoutes(routes, location);
 
-// const is404Page = !matches;
+  // const is404Page = !matches;
 
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <div className="appcontainer">
-      <AuthProvider>
 
-        {/* Hide navbar on login */}
+    <AuthProvider>
+      {!isLoginPage && !is404Page && (
+        <Navbar toggleMenu={toggleMenu} isMobileMenuOpen={isMenuOpen} />
+      )}
+
+      <Layout>
+
         {!isLoginPage && !is404Page && (
-          <Navbar toggleMenu={toggleMenu} isMobileMenuOpen={isMenuOpen} />
+          <SidebarMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
         )}
 
+        <Content>
+          <AppRoutes />
+        </Content>
 
-        <div className="content-wrapper">
-          <Layout className="dashboard-layout">
+      </Layout>
+    </AuthProvider>
 
-            {/* Hide sidebar on login */}
-            {!isLoginPage && !is404Page && (
-              <SidebarMenu isOpen={isMenuOpen} toggleMenu={toggleMenu} />
-            )}
-
-
-            <Content className="content-styles">
-              <AppRoutes />
-            </Content>
-
-          </Layout>
-        </div>
-
-      </AuthProvider>
-    </div>
   );
 }
 
